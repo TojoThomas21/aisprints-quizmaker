@@ -226,11 +226,38 @@ Acknowledges a logout request. Because there is no session or token state, this 
 
 ### User Interface Requirements
 
-Use shadcn/ui components (`field`, `input`, `button`, `card`, `label`) and Tailwind theme tokens. Forms are client components that hash the password in the browser, then POST JSON to the API routes.
+Use **shadcn/ui** components (`field`, `input`, `button`, `card`, `label`) and **Tailwind CSS** theme tokens (configured in `src/app/globals.css`; styling is applied via Tailwind utility classes on shadcn components). Forms are **client components** that hash the password in the browser, then POST JSON to the API routes.
+
+#### shadcn/ui block foundation (Phase 4)
+
+Phase 4 pages are built from shadcn **Login** and **Signup** blocks, adapted to project requirements:
+
+| Block | Component file | Route page |
+|-------|----------------|------------|
+| Login block | `src/components/login-form.tsx` | `src/app/login/page.tsx` |
+| Signup block | `src/components/signup-form.tsx` | `src/app/register/page.tsx` |
+
+**Layout pattern** (both auth pages):
+
+```tsx
+<div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+  <div className="w-full max-w-sm">
+    <LoginForm /> {/* or <SignupForm /> on /register */}
+  </div>
+</div>
+```
+
+**Adaptations from raw shadcn blocks (required by PRD / out of scope):**
+
+- **Signup block**: replace single “Full Name” field with separate **First name**, **Last name**, and **Username** fields; wire submit to `POST /api/auth/register` with client-side `passwordHash`.
+- **Login block**: replace email-only field with **Username or email**; wire submit to `POST /api/auth/login` with client-side `passwordHash`.
+- **Remove** “Login with Google”, “Sign up with Google”, and “Forgot password” (OAuth and password reset are out of scope).
+- **Replace** `#` anchor links with Next.js `Link` to `/register` and `/login`.
+- **Errors** surfaced via `FieldError` from shadcn `field`.
 
 #### Register Page (`/register`)
 
-- Card layout with title "Create your account"
+- Card layout with title **"Create an account"** (shadcn Signup block)
 - Form fields:
   - First name — required, 1–100 characters
   - Last name — required, 1–100 characters
@@ -248,7 +275,7 @@ Use shadcn/ui components (`field`, `input`, `button`, `card`, `label`) and Tailw
 
 #### Login Page (`/login`)
 
-- Card layout with title "Sign in"
+- Card layout with title **"Login to your account"** (shadcn Login block)
 - Form fields:
   - Username or email — required
   - Password — required
@@ -507,7 +534,7 @@ Mock user service with `vi.mock("@/lib/services/user-service")`.
 
 ---
 
-### Phase 4: Frontend Pages - PLANNED
+### Phase 4: Frontend Pages - COMPLETED
 
 **Objective**: Teachers can register, log in, log out, and land on the MCQ stub.
 
@@ -558,13 +585,13 @@ Mock `fetch`; use `@testing-library/react` + `userEvent`.
 
 #### Phase completion
 
-- [ ] Frontend tests written before page implementations
-- [ ] `npm test` passes (green) for Phases 1–4
-- [ ] Client hashes password before POST (supports acceptance: "hashed in browser")
-- [ ] Register and login redirect to `/mcqs` on success
-- [ ] Logout calls API and redirects to `/login`
+- [x] Frontend tests written before page implementations
+- [x] `npm test` passes (green) for Phases 1–4
+- [x] Client hashes password before POST (supports acceptance: "hashed in browser")
+- [x] Register and login redirect to `/mcqs` on success
+- [x] Logout calls API and redirects to `/login`
 
-**Deliverables**: four test files, `password-client.ts`, four pages
+**Deliverables**: four test files, `password-client.ts`, `login-form.tsx`, `signup-form.tsx`, four pages
 
 ---
 
@@ -619,8 +646,10 @@ Run the **complete Vitest suite** built across Phases 1–4. Any failing test mu
 - `src/app/api/auth/register/route.ts` — registration endpoint
 - `src/app/api/auth/login/route.ts` — login endpoint
 - `src/app/api/auth/logout/route.ts` — logout endpoint
-- `src/app/register/page.tsx` — registration UI
-- `src/app/login/page.tsx` — login UI
+- `src/components/login-form.tsx` — shadcn Login block (client form)
+- `src/components/signup-form.tsx` — shadcn Signup block (client form)
+- `src/app/register/page.tsx` — registration page shell
+- `src/app/login/page.tsx` — login page shell
 - `src/app/mcqs/page.tsx` — MCQ stub UI
 
 **Tests (colocated, written before implementation)**
@@ -856,6 +885,6 @@ When working with this PRD:
 ## Current Status
 
 **Last Updated**: August 26, 2026
-**Current Phase**: Phase 4 - Frontend Pages
-**Status**: PLANNED (Phase 3 complete — awaiting review)
-**Next Steps**: Review Phase 3; on approval commit and push to `feature/register-login-logout`. Then begin Phase 4.
+**Current Phase**: Phase 5 - Verification
+**Status**: PLANNED (Phase 4 complete — awaiting review)
+**Next Steps**: Review Phase 4; on approval commit and push to `feature/register-login-logout`. Then begin Phase 5.
