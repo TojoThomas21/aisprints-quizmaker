@@ -595,7 +595,7 @@ Mock `fetch`; use `@testing-library/react` + `userEvent`.
 
 ---
 
-### Phase 5: Verification - PLANNED
+### Phase 5: Verification - COMPLETED (automated); manual preview pending local run
 
 **Objective**: Confirm the full feature meets global acceptance criteria.
 
@@ -603,31 +603,31 @@ Mock `fetch`; use `@testing-library/react` + `userEvent`.
 
 Run the **complete Vitest suite** built across Phases 1–4. Any failing test must be fixed before sign-off. Add new tests only if manual preview reveals behavior not covered by existing tests (write test first, then fix — still TDD).
 
-| Check | Red signal | Green signal |
-|-------|------------|--------------|
-| Full Vitest suite | Any test failure | `npm test` exits 0 |
-| Lint | ESLint errors | `npm run lint` exits 0 |
-| Build | Compile errors | `npm run build` succeeds |
-| Preview smoke | Manual flow broken | Register → `/mcqs`, login → `/mcqs`, logout → `/login`, duplicate → error |
+| Check | Red signal | Green signal | Result (Aug 26, 2026) |
+|-------|------------|--------------|------------------------|
+| Full Vitest suite | Any test failure | `npm test` exits 0 | **Green** — 43 tests, 11 files |
+| Lint | ESLint errors | `npm run lint` exits 0 | **Green** — added `.wrangler/**` to `eslint.config.mjs` ignores |
+| Build | Compile errors | `npm run build` succeeds | **Green** — all routes compile |
+| Preview smoke | Manual flow broken | Register → `/mcqs`, login → `/mcqs`, logout → `/login`, duplicate → error | **Not run in agent env** — `npm run preview` fails on Windows with `EPERM` deleting `.open-next` (see Troubleshooting). Run locally. |
 
 #### Implementation tasks
 
-1. Run `npm test` — entire suite **green**
-2. Run `npm run lint` — zero errors
-3. Run `npm run build` — succeeds
-4. Run `npm run preview` — end-to-end manual flows
-5. Mark global acceptance criteria below
-6. Record manual test notes in Troubleshooting Guide if issues found
+1. Run `npm test` — entire suite **green** ✓
+2. Run `npm run lint` — zero errors ✓
+3. Run `npm run build` — succeeds ✓
+4. Run `npm run preview` — end-to-end manual flows — **blocked in agent environment**; user should verify locally
+5. Mark global acceptance criteria below ✓ (automated + Vitest-backed functional criteria)
+6. Record manual test notes in Troubleshooting Guide if issues found ✓
 
 #### Phase completion
 
-- [ ] `npm test` — full Vitest suite green (all phases)
-- [ ] `npm run lint` passes
-- [ ] `npm run build` succeeds
-- [ ] Manual preview flows pass
-- [ ] All global acceptance criteria (below) checked
+- [x] `npm test` — full Vitest suite green (all phases)
+- [x] `npm run lint` passes
+- [x] `npm run build` succeeds
+- [ ] Manual preview flows pass — **pending local `npm run preview` on developer machine**
+- [x] All global acceptance criteria (below) checked — automated/Vitest-backed items; preview smoke pending
 
-**Deliverables**: Green CI-local checks; troubleshooting notes if any
+**Deliverables**: Green CI-local checks; troubleshooting notes for Windows preview EPERM
 
 ---
 
@@ -759,28 +759,28 @@ Global criteria for feature sign-off (Phase 5). Phase-specific gates are in each
 
 **Automated (Vitest)**
 
-- [ ] Vitest configured; `npm test` runs across all phases
-- [ ] Tests were written **before** production code in each phase (TDD)
-- [ ] `npm test` passes with zero failures (full suite green)
+- [x] Vitest configured; `npm test` runs across all phases
+- [x] Tests were written **before** production code in each phase (TDD)
+- [x] `npm test` passes with zero failures (full suite green)
 
 **Functional (covered by Vitest + manual preview)**
 
-- [ ] A teacher can open `/register`, fill in first name, last name, username, email, and password, and create an account
-- [ ] On successful registration, the user is redirected to `/mcqs`
-- [ ] A teacher can open `/login`, enter username (or email) and password, and sign in
-- [ ] On successful login, the user is redirected to `/mcqs`
-- [ ] On the MCQ stub page, clicking Logout calls the logout endpoint and redirects to `/login`
-- [ ] Registering with a duplicate username or email returns a clear error message
-- [ ] Login with wrong credentials returns "Invalid username or password" without revealing which field failed
-- [ ] Passwords are never stored in plaintext in D1
-- [ ] Passwords are hashed in the browser before being sent in POST requests
-- [ ] The `users` table exists via a Wrangler migration applied locally
-- [ ] User service provides create, read, update, and delete methods
+- [x] A teacher can open `/register`, fill in first name, last name, username, email, and password, and create an account (Vitest: `register/page.test.tsx`)
+- [x] On successful registration, the user is redirected to `/mcqs` (Vitest: `register/page.test.tsx`)
+- [x] A teacher can open `/login`, enter username (or email) and password, and sign in (Vitest: `login/page.test.tsx`)
+- [x] On successful login, the user is redirected to `/mcqs` (Vitest: `login/page.test.tsx`)
+- [x] On the MCQ stub page, clicking Logout calls the logout endpoint and redirects to `/login` (Vitest: `mcqs/page.test.tsx`)
+- [x] Registering with a duplicate username or email returns a clear error message (Vitest: `register/route.test.ts`, 409)
+- [x] Login with wrong credentials returns "Invalid username or password" without revealing which field failed (Vitest: `login/route.test.ts`, `login/page.test.tsx`)
+- [x] Passwords are never stored in plaintext in D1 (Vitest: `user-service.test.ts` — PBKDF2 stored hash ≠ client hash)
+- [x] Passwords are hashed in the browser before being sent in POST requests (Vitest: `password-client.test.ts`, page tests)
+- [x] The `users` table exists via a Wrangler migration applied locally (Vitest: `migrations.test.ts`)
+- [x] User service provides create, read, update, and delete methods (Vitest: `user-service.test.ts`)
 
 **Build quality**
 
-- [ ] `npm run lint` passes with no errors
-- [ ] `npm run build` succeeds
+- [x] `npm run lint` passes with no errors
+- [x] `npm run build` succeeds
 
 ---
 
@@ -857,7 +857,23 @@ No new secrets required for this feature. D1 binding is configured in `wrangler.
 
 ## Troubleshooting Guide
 
-_(Entries will be added during implementation.)_
+### `npm run preview` fails on Windows with `EPERM` deleting `.open-next`
+
+**Symptom**: OpenNext build exits with `Error: EPERM, Permission denied` when removing `.open-next`.
+
+**Cause**: OpenNext warns it is not fully compatible with Windows. Another process (IDE, antivirus, prior preview) may lock files under `.open-next`.
+
+**Workaround**:
+1. Close any running preview/dev servers.
+2. Delete `.open-next` manually (or from an elevated terminal).
+3. Retry `npm run preview`, or use WSL for Workers runtime testing.
+4. Apply local D1 migrations if needed: `npx wrangler d1 migrations apply quizmaker-db --local`
+
+**Manual smoke checklist** (after preview starts, typically `http://localhost:8787`):
+- Register new user → lands on `/mcqs`
+- Logout → returns to `/login`
+- Login with same credentials → lands on `/mcqs`
+- Register duplicate username/email → clear error on form
 
 ---
 
@@ -886,5 +902,5 @@ When working with this PRD:
 
 **Last Updated**: August 26, 2026
 **Current Phase**: Phase 5 - Verification
-**Status**: PLANNED (Phase 4 complete — awaiting review)
-**Next Steps**: Review Phase 4; on approval commit and push to `feature/register-login-logout`. Then begin Phase 5.
+**Status**: COMPLETED (automated checks green; manual preview pending local run)
+**Next Steps**: Run `npm run preview` locally and complete smoke checklist. On approval, commit Phase 5 (eslint ignore + PRD) and open PR to `main`.
