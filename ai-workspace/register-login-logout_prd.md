@@ -404,7 +404,7 @@ A phase is done when Vitest is green **and** every box below is checked:
 
 ---
 
-### Phase 2: User Service - PLANNED
+### Phase 2: User Service - COMPLETED
 
 **Objective**: Build the server-side user service layer backed by D1.
 
@@ -436,10 +436,10 @@ Mock `@/lib/db` or D1 prepared statements with `vi.mock`; never use a real datab
 
 #### Phase completion
 
-- [ ] `user-service.test.ts` written before `user-service.ts`
-- [ ] `npm test` passes (green) for Phase 1 and Phase 2 tests
-- [ ] User service exposes create, read (by username/email), update, delete
-- [ ] Passwords stored as server-side hash only (supports acceptance: "never plaintext in D1")
+- [x] `user-service.test.ts` written before `user-service.ts`
+- [x] `npm test` passes (green) for Phase 1 and Phase 2 tests
+- [x] User service exposes create, read (by username/email), update, delete
+- [x] Passwords stored as server-side hash only (supports acceptance: "never plaintext in D1")
 
 **Deliverables**: `src/lib/services/user-service.test.ts`, `src/lib/services/user-service.ts`
 
@@ -856,6 +856,6 @@ When working with this PRD:
 ## Current Status
 
 **Last Updated**: August 26, 2026
-**Current Phase**: Phase 2 - User Service
-**Status**: PLANNED (Phase 1 complete — awaiting review)
-**Next Steps**: Review Phase 1; on approval create feature branch, commit, and push. Then begin Phase 2 with failing `user-service.test.ts`.
+**Current Phase**: Phase 3 - API Endpoints
+**Status**: PLANNED (Phase 2 complete — awaiting review)
+**Next Steps**: Review Phase 2; on approval commit and push to `feature/register-login-logout`. Then begin Phase 3.
