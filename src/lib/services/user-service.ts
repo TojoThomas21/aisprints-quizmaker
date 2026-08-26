@@ -128,6 +128,39 @@ export async function getUserByEmail(email: string): Promise<User | null> {
 	return row ? toPublicUser(row) : null;
 }
 
+async function getUserRowByUsernameOrEmail(identifier: string): Promise<UserRow | null> {
+	const db = await getDatabase();
+	const byUsername = await db
+		.prepare("SELECT id, first_name, last_name, username, email, password_hash, created_at, updated_at FROM users WHERE username = ?1")
+		.bind(identifier)
+		.all<UserRow>();
+
+	if (byUsername.results[0]) {
+		return byUsername.results[0];
+	}
+
+	const byEmail = await db
+		.prepare("SELECT id, first_name, last_name, username, email, password_hash, created_at, updated_at FROM users WHERE email = ?1")
+		.bind(identifier)
+		.all<UserRow>();
+
+	return byEmail.results[0] ?? null;
+}
+
+export async function authenticateUser(usernameOrEmail: string, clientHash: string): Promise<User | null> {
+	const row = await getUserRowByUsernameOrEmail(usernameOrEmail);
+	if (!row) {
+		return null;
+	}
+
+	const valid = await verifyPassword(clientHash, row.password_hash);
+	if (!valid) {
+		return null;
+	}
+
+	return toPublicUser(row);
+}
+
 export async function createUser(input: CreateUserInput): Promise<User> {
 	if (await getUserByUsername(input.username)) {
 		throw new DuplicateUserError("Username already taken");

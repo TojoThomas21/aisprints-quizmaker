@@ -445,7 +445,7 @@ Mock `@/lib/db` or D1 prepared statements with `vi.mock`; never use a real datab
 
 ---
 
-### Phase 3: API Endpoints - PLANNED
+### Phase 3: API Endpoints - COMPLETED
 
 **Objective**: Expose register, login, and logout over HTTP.
 
@@ -497,11 +497,11 @@ Mock user service with `vi.mock("@/lib/services/user-service")`.
 
 #### Phase completion
 
-- [ ] Validation and route tests written before route implementations
-- [ ] `npm test` passes (green) for Phases 1–3
-- [ ] Register returns 201 / 400 / 409 as specified
-- [ ] Login returns 200 / 401 / 400 as specified; generic error on failure
-- [ ] Logout returns 200
+- [x] Validation and route tests written before route implementations
+- [x] `npm test` passes (green) for Phases 1–3
+- [x] Register returns 201 / 400 / 409 as specified
+- [x] Login returns 200 / 401 / 400 as specified; generic error on failure
+- [x] Logout returns 200
 
 **Deliverables**: `auth.test.ts`, three `route.test.ts` files, `auth.ts` schemas, three route handlers
 
@@ -856,6 +856,6 @@ When working with this PRD:
 ## Current Status
 
 **Last Updated**: August 26, 2026
-**Current Phase**: Phase 3 - API Endpoints
-**Status**: PLANNED (Phase 2 complete — awaiting review)
-**Next Steps**: Review Phase 2; on approval commit and push to `feature/register-login-logout`. Then begin Phase 3.
+**Current Phase**: Phase 4 - Frontend Pages
+**Status**: PLANNED (Phase 3 complete — awaiting review)
+**Next Steps**: Review Phase 3; on approval commit and push to `feature/register-login-logout`. Then begin Phase 4.
