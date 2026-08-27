@@ -595,7 +595,7 @@ Mock `fetch`; use `@testing-library/react` + `userEvent`.
 
 ---
 
-### Phase 5: Verification - COMPLETED (automated); manual preview pending local run
+### Phase 5: Verification - COMPLETED
 
 **Objective**: Confirm the full feature meets global acceptance criteria.
 
@@ -603,20 +603,21 @@ Mock `fetch`; use `@testing-library/react` + `userEvent`.
 
 Run the **complete Vitest suite** built across Phases 1–4. Any failing test must be fixed before sign-off. Add new tests only if manual preview reveals behavior not covered by existing tests (write test first, then fix — still TDD).
 
-| Check | Red signal | Green signal | Result (Aug 26, 2026) |
-|-------|------------|--------------|------------------------|
-| Full Vitest suite | Any test failure | `npm test` exits 0 | **Green** — 43 tests, 11 files |
+| Check | Red signal | Green signal | Result |
+|-------|------------|--------------|--------|
+| Full Vitest suite | Any test failure | `npm test` exits 0 | **Green** — 43 tests, 11 files (Aug 26, 2026) |
 | Lint | ESLint errors | `npm run lint` exits 0 | **Green** — added `.wrangler/**` to `eslint.config.mjs` ignores |
 | Build | Compile errors | `npm run build` succeeds | **Green** — all routes compile |
-| Preview smoke | Manual flow broken | Register → `/mcqs`, login → `/mcqs`, logout → `/login`, duplicate → error | **Not run in agent env** — `npm run preview` fails on Windows with `EPERM` deleting `.open-next` (see Troubleshooting). Run locally. |
+| Preview smoke | Manual flow broken | Register → `/mcqs`, login → `/mcqs`, logout → `/login`, duplicate → error | **Green** — verified locally via `npm run preview` (Aug 27, 2026) |
+| Production smoke | Deploy broken | Same flows on Workers URL | **Green** — verified at `https://quizmaker.tojo-thomas.workers.dev` (Aug 27, 2026) |
 
 #### Implementation tasks
 
 1. Run `npm test` — entire suite **green** ✓
 2. Run `npm run lint` — zero errors ✓
 3. Run `npm run build` — succeeds ✓
-4. Run `npm run preview` — end-to-end manual flows — **blocked in agent environment**; user should verify locally
-5. Mark global acceptance criteria below ✓ (automated + Vitest-backed functional criteria)
+4. Run `npm run preview` — end-to-end manual flows ✓ (verified locally)
+5. Mark global acceptance criteria below ✓
 6. Record manual test notes in Troubleshooting Guide if issues found ✓
 
 #### Phase completion
@@ -624,10 +625,10 @@ Run the **complete Vitest suite** built across Phases 1–4. Any failing test mu
 - [x] `npm test` — full Vitest suite green (all phases)
 - [x] `npm run lint` passes
 - [x] `npm run build` succeeds
-- [ ] Manual preview flows pass — **pending local `npm run preview` on developer machine**
-- [x] All global acceptance criteria (below) checked — automated/Vitest-backed items; preview smoke pending
+- [x] Manual preview flows pass — local `npm run preview` smoke test (Aug 27, 2026)
+- [x] All global acceptance criteria (below) checked
 
-**Deliverables**: Green CI-local checks; troubleshooting notes for Windows preview EPERM
+**Deliverables**: Green CI-local checks; production deploy verified; troubleshooting notes for Windows preview EPERM
 
 ---
 
@@ -900,7 +901,8 @@ When working with this PRD:
 
 ## Current Status
 
-**Last Updated**: August 26, 2026
-**Current Phase**: Phase 5 - Verification
-**Status**: COMPLETED (automated checks green; manual preview pending local run)
-**Next Steps**: Run `npm run preview` locally and complete smoke checklist. On approval, commit Phase 5 (eslint ignore + PRD) and open PR to `main`.
+**Last Updated**: August 27, 2026
+**Current Phase**: Phase 5 - Verification (complete)
+**Status**: COMPLETED — automated checks, local preview, and production deploy all verified
+**Production URL**: https://quizmaker.tojo-thomas.workers.dev
+**Next Steps**: Feature sign-off complete. Begin next sprint PRD (e.g. MCQ features or session management).
