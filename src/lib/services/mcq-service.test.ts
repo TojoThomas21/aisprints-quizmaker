@@ -1,18 +1,10 @@
-import { beforeEach, describe, expect, it, vi, type Mock } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
-type McqServiceModule = typeof import("@/lib/services/mcq-service.ts");
+type McqServiceModule = typeof import("@/lib/services/mcq-service");
 
 type PrepareHandler = (sql: string) => {
 	all?: () => Promise<{ results: unknown[] }>;
 	run?: () => Promise<{ success: boolean }>;
-};
-
-type MockDb = {
-	prepare: Mock<(sql: string) => { bind: MockDb["bind"] }>;
-	bind: Mock<(...args: unknown[]) => { all: MockDb["all"]; run: MockDb["run"] }>;
-	all: Mock<() => Promise<{ results: unknown[] }>>;
-	run: Mock<() => Promise<{ success: boolean }>>;
-	batch: Mock<() => Promise<unknown[]>>;
 };
 
 const mockGetDatabase = vi.fn();
@@ -94,7 +86,7 @@ const sampleAttemptRow: AttemptRow = {
 	created_at: "2026-09-01 12:05:00",
 };
 
-function createMockDb(): MockDb {
+function createMockDb() {
 	const all = vi.fn(async () => ({ results: [] as unknown[] }));
 	const run = vi.fn(async () => ({ success: true }));
 	const bind = vi.fn((..._args: unknown[]) => ({ all, run }));
@@ -106,8 +98,10 @@ function createMockDb(): MockDb {
 	return { prepare, bind, all, run, batch };
 }
 
+type MockDb = ReturnType<typeof createMockDb>;
+
 async function loadMcqService(): Promise<McqServiceModule> {
-	return import("@/lib/services/mcq-service.ts");
+	return import("@/lib/services/mcq-service");
 }
 
 function routePrepare(prepare: MockDb["prepare"], handlers: PrepareHandler[]) {
@@ -116,11 +110,10 @@ function routePrepare(prepare: MockDb["prepare"], handlers: PrepareHandler[]) {
 		const handler = handlers[callIndex] ?? handlers[handlers.length - 1];
 		callIndex += 1;
 		const result = handler(sql);
+		const statementAll = vi.fn(result.all ?? (async () => ({ results: [] })));
+		const statementRun = vi.fn(result.run ?? (async () => ({ success: true })));
 		return {
-			bind: vi.fn(() => ({
-				all: result.all ?? (async () => ({ results: [] })),
-				run: result.run ?? (async () => ({ success: true })),
-			})),
+			bind: vi.fn(() => ({ all: statementAll, run: statementRun })),
 		};
 	});
 }
@@ -370,8 +363,8 @@ describe("mcq-service", () => {
 						updateCalls.push(args);
 					}
 					return {
-						all: async () => ({ results: [sampleMcqRow] }),
-						run: async () => ({ success: true }),
+						all: vi.fn(async () => ({ results: [sampleMcqRow] })),
+						run: vi.fn(async () => ({ success: true })),
 					};
 				}),
 			}));
@@ -424,8 +417,8 @@ describe("mcq-service", () => {
 						updateSqlCalls.push(sql);
 					}
 					return {
-						all: async () => ({ results: [sampleMcqRow] }),
-						run: async () => ({ success: true }),
+						all: vi.fn(async () => ({ results: [sampleMcqRow] })),
+						run: vi.fn(async () => ({ success: true })),
 					};
 				}),
 			}));
