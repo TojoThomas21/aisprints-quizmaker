@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi, type Mock } from "vitest";
 
-type McqServiceModule = typeof import("@/lib/services/mcq-service");
+type McqServiceModule = typeof import("@/lib/services/mcq-service.ts");
 
 type PrepareHandler = (sql: string) => {
 	all?: () => Promise<{ results: unknown[] }>;
@@ -107,7 +107,7 @@ function createMockDb(): MockDb {
 }
 
 async function loadMcqService(): Promise<McqServiceModule> {
-	return import("@/lib/services/mcq-service");
+	return import("@/lib/services/mcq-service.ts");
 }
 
 function routePrepare(prepare: MockDb["prepare"], handlers: PrepareHandler[]) {

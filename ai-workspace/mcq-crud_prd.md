@@ -494,7 +494,7 @@ The red-to-green Vitest signal and the phase's acceptance criteria together are 
 
 ---
 
-### Phase 3: API Endpoints - PLANNED
+### Phase 3: API Endpoints - COMPLETED
 
 **Objective**: Expose the service over HTTP, with Zod validation on every request body.
 
@@ -562,11 +562,11 @@ The red-to-green Vitest signal and the phase's acceptance criteria together are 
 
 #### Phase completion
 
-- [ ] Validation and route tests written before implementations
-- [ ] `npm test` green for Phases 1–3
-- [ ] All seven endpoints return the documented status codes
-- [ ] `isCorrect` cannot be set by the client
-- [ ] Route handlers await the `params` promise (Next.js 16)
+- [x] Validation and route tests written before implementations — 33 new tests failed with missing modules before routes existed
+- [x] `npm test` green for Phases 1–3 — 107 tests across 16 files, exit 0
+- [x] All seven endpoints return the documented status codes
+- [x] `isCorrect` cannot be set by the client — `createAttemptSchema` omits it; only `userId` and `choiceId` pass through
+- [x] Route handlers await the `params` promise (Next.js 16)
 
 **Deliverables**: `src/lib/validations/mcq.ts` + test, `src/app/api/mcqs/route.ts` + test, `src/app/api/mcqs/[id]/route.ts` + test, `src/app/api/mcqs/[id]/attempts/route.ts` + test
 
@@ -1055,6 +1055,6 @@ When working with this PRD:
 ## Current Status
 
 **Last Updated**: September 1, 2026
-**Current Phase**: Phase 2 - MCQ Service (complete), awaiting review
-**Status**: Phase 2 COMPLETED — `npm test` green (74 tests, 12 files), `npm run lint` clean
-**Next Steps**: Awaiting user review of Phase 2. On approval, commit and push Phase 2 to `feature/mcq-v1`, then begin Phase 3 (API Endpoints).
+**Current Phase**: Phase 3 - API Endpoints (complete), awaiting review
+**Status**: Phase 3 COMPLETED — `npm test` green (107 tests, 16 files), `npm run lint` clean
+**Next Steps**: Awaiting user review of Phase 3. On approval, commit and push Phase 3 to `feature/mcq-v1`, then begin Phase 4 (UI).
