@@ -446,7 +446,7 @@ The red-to-green Vitest signal and the phase's acceptance criteria together are 
 
 ---
 
-### Phase 2: MCQ Service - PLANNED
+### Phase 2: MCQ Service - COMPLETED
 
 **Objective**: Build the service layer for questions, choices, and attempts.
 
@@ -484,11 +484,11 @@ The red-to-green Vitest signal and the phase's acceptance criteria together are 
 
 #### Phase completion
 
-- [ ] `mcq-service.test.ts` written before `mcq-service.ts`
-- [ ] `npm test` green for Phases 1–2
-- [ ] Service exposes list, read, create, update, delete, `createAttempt`, `listAttemptsByMcq`
-- [ ] Attempt correctness is derived server-side, never taken from input
-- [ ] All queries use numbered placeholders; no string concatenation
+- [x] `mcq-service.test.ts` written before `mcq-service.ts` — 21 tests failed with missing module before implementation
+- [x] `npm test` green for Phases 1–2 — 74 tests across 12 files, exit 0
+- [x] Service exposes list, read, create, update, delete, `createAttempt`, `listAttemptsByMcq`
+- [x] Attempt correctness is derived server-side from `mcq_choices.is_correct`, never from client input
+- [x] All queries use numbered placeholders; no string concatenation
 
 **Deliverables**: `src/lib/services/mcq-service.test.ts`, `src/lib/services/mcq-service.ts`
 
@@ -1055,6 +1055,6 @@ When working with this PRD:
 ## Current Status
 
 **Last Updated**: September 1, 2026
-**Current Phase**: Phase 1 - Schema + Migration (complete), awaiting review
-**Status**: Phase 1 COMPLETED — `npm test` green (53 tests, 11 files), `npm run lint` clean, migration applied to local D1 only
-**Next Steps**: Awaiting user review of Phase 1. On approval, and only when directed: create the shared feature branch, commit and push Phase 1, then begin Phase 2 (MCQ Service).
+**Current Phase**: Phase 2 - MCQ Service (complete), awaiting review
+**Status**: Phase 2 COMPLETED — `npm test` green (74 tests, 12 files), `npm run lint` clean
+**Next Steps**: Awaiting user review of Phase 2. On approval, commit and push Phase 2 to `feature/mcq-v1`, then begin Phase 3 (API Endpoints).
