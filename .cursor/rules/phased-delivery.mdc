@@ -1,0 +1,48 @@
+---
+description: Phase-by-phase delivery workflow — stop for approval, then commit and push to the feature branch
+globs: ai-workspace/**,src/**
+alwaysApply: true
+---
+
+# Phased delivery workflow
+
+When implementing a feature from a technical PRD in `ai-workspace/` that defines
+implementation phases (e.g. `mcq-crud_prd.md`):
+
+## One phase at a time
+
+- Work on **one phase only** per session stretch unless the user explicitly asks to continue.
+- Follow TDD within the phase: write tests first → confirm red → implement → confirm green.
+- Update the PRD phase status and completion checkboxes when the phase is done.
+
+## Stop for approval
+
+At the end of each phase, **stop and wait for the user to review**. Do not start the
+next phase until they approve. End the turn with:
+
+- A phase summary (what was built, files changed, test results)
+- Any assumptions or open questions
+- A clear ask: whether to commit/push and whether to proceed to the next phase
+
+## Commit and push after approval
+
+When the user approves a completed phase (or explicitly asks to commit):
+
+1. Confirm you are on the **current feature branch** for that work (e.g. `feature/mcq-v1`).
+   Create or switch branches only when the user directs it.
+2. Stage only files for that phase.
+3. Create **one commit per phase** with a message that names the phase and what it delivered.
+4. **Push to the same feature branch** (`git push origin <branch>`).
+5. Report the commit hash and confirm the working tree is clean.
+
+Do not commit or push unprompted. Do not combine multiple phases into one commit unless
+the user asks. Do not run `npm run deploy` unless explicitly asked (see `AGENTS.md`).
+
+## Phase gate checklist
+
+Before asking for approval, confirm:
+
+- [ ] Phase Vitest tests pass (`npm test`)
+- [ ] `npm run lint` passes (and `npm run build` when the phase touches routes or UI)
+- [ ] PRD phase completion checkboxes are updated
+- [ ] Next phase has **not** been started

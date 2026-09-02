@@ -572,7 +572,7 @@ The red-to-green Vitest signal and the phase's acceptance criteria together are 
 
 ---
 
-### Phase 4: UI - PLANNED
+### Phase 4: UI - COMPLETED
 
 **Objective**: Build the front end — the question bank table, the shared create/edit editor, and the preview page that records attempts.
 
@@ -666,19 +666,19 @@ This is the largest phase. Work through the three groups below in order, running
 
 #### Phase completion
 
-- [ ] Tests written before the implementation in each of 4a, 4b, and 4c
-- [ ] `npm test` green for Phases 1–4
-- [ ] Table shows name, question, and an actions column with three vertical ellipses
-- [ ] Dropdown offers Edit, Preview, and Delete
-- [ ] Delete is confirmed before the request is sent
-- [ ] Logout still works
-- [ ] One shared form component serves both create and edit
-- [ ] Choice count is constrained to 2–6 in the UI
-- [ ] Exactly one correct choice is enforced before save
-- [ ] Save and Cancel behave as specified
-- [ ] Submitting a preview answer records an attempt through the API
-- [ ] Correctness is only revealed after submitting
-- [ ] Repeat attempts are allowed and each is recorded
+- [x] Tests written before the implementation in each of 4a, 4b, and 4c
+- [x] `npm test` green for Phases 1–4
+- [x] Table shows name, question, and an actions column with three vertical ellipses
+- [x] Dropdown offers Edit, Preview, and Delete
+- [x] Delete is confirmed before the request is sent
+- [x] Logout still works
+- [x] One shared form component serves both create and edit
+- [x] Choice count is constrained to 2–6 in the UI
+- [x] Exactly one correct choice is enforced before save
+- [x] Save and Cancel behave as specified
+- [x] Submitting a preview answer records an attempt through the API
+- [x] Correctness is only revealed after submitting
+- [x] Repeat attempts are allowed and each is recorded
 
 **Deliverables**: `src/components/ui/dropdown-menu.tsx`, `textarea.tsx`, and `radio-group.tsx` (generated); `src/components/mcq-table.tsx`; `src/components/mcq-form.tsx` + test; updated `src/app/mcqs/page.tsx` and extended `src/app/mcqs/page.test.tsx`; `src/app/mcqs/new/page.tsx` + test; `src/app/mcqs/[id]/edit/page.tsx` + test; `src/app/mcqs/[id]/preview/page.tsx` + test
 
@@ -1055,6 +1055,6 @@ When working with this PRD:
 ## Current Status
 
 **Last Updated**: September 1, 2026
-**Current Phase**: Phase 3 - API Endpoints (complete), awaiting review
-**Status**: Phase 3 COMPLETED — `npm test` green (107 tests, 16 files), `npm run lint` clean
-**Next Steps**: Awaiting user review of Phase 3. On approval, commit and push Phase 3 to `feature/mcq-v1`, then begin Phase 4 (UI).
+**Current Phase**: Phase 4 - UI (complete), awaiting review
+**Status**: Phase 4 COMPLETED — `npm test` green (150 tests, 20 files), `npm run lint` clean, `npm run build` succeeds
+**Next Steps**: Awaiting user review of Phase 4. On approval, commit and push Phase 4 to `feature/mcq-v1`, then begin Phase 5 (Verify).
